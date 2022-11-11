@@ -2,6 +2,7 @@
 //
 
 #include "framework.h"
+#include "Commctrl.h"
 #include "WindowsProject7.h"
 
 #define MAX_LOADSTRING 100
@@ -11,7 +12,7 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
-HWND hCheckBox1,hCheckBox2,hEdit;
+HWND hCheckBox1,hCheckBox2,hEdit11,hEdit22,hSpin1,hSpin2;
 
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -126,19 +127,31 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
         if (result1 == BST_CHECKED && result2 == BST_CHECKED) {
             RightAnswers++;
         }
-        hEdit = GetDlgItem(hWnd, IDC_EDIT2);
+        hEdit11 = GetDlgItem(hWnd, IDC_EDIT2);
         TCHAR Edit1[10],Edit2[10];
-        GetWindowText(hEdit, Edit1, 10);
+        GetWindowText(hEdit11, Edit1, 10);
         if (_tcscmp(Edit1,TEXT("Лампочка"))==0)
             RightAnswers++;
-        hEdit = GetDlgItem(hWnd, IDC_EDIT1);
-        GetWindowText(hEdit, Edit2, 10);
+        hEdit11 = GetDlgItem(hWnd, IDC_EDIT1);
+        GetWindowText(hEdit11, Edit2, 10);
         if (_tcscmp(Edit1, TEXT("15")) == 0)
             RightAnswers++;
         int Result= (RightAnswers * 100) / MaxRightAnswers;
+
+        hSpin1 = GetDlgItem(hWnd, IDC_SPIN2);
+        hSpin1 = GetDlgItem(hWnd, IDC_SPIN3);
+        hEdit11 = GetDlgItem(hWnd, IDC_EDIT3);
+        hEdit22 = GetDlgItem(hWnd, IDC_EDIT4);
+
+        SendMessage(hSpin1, UDM_SETRANGE32, 1, 100);
+        SendMessage(hSpin1, UDM_SETBUDDY, WPARAM(hEdit11), 0);
+        SetWindowText(hEdit11, TEXT("100"));
+
+
+
         if (LOWORD(wp) == IDOK) {
             _stprintf_s(str, TEXT("Правильных ответов: %d, out of 100 percents "), Result);
-            MessageBox(hWnd, str, TEXT("Ты лох"), MB_OK | MB_ICONINFORMATION);
+            MessageBox(hWnd, str, TEXT("Результаты"), MB_OK | MB_ICONINFORMATION);
         }
         }
         return TRUE;
