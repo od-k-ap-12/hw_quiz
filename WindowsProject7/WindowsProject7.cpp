@@ -138,14 +138,14 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
             RightAnswers++;
         int Result= (RightAnswers * 100) / MaxRightAnswers;
 
-        hSpin1 = GetDlgItem(hWnd, IDC_SPIN2);
+       /* hSpin1 = GetDlgItem(hWnd, IDC_SPIN2);
         hSpin1 = GetDlgItem(hWnd, IDC_SPIN3);
         hEdit11 = GetDlgItem(hWnd, IDC_EDIT3);
         hEdit22 = GetDlgItem(hWnd, IDC_EDIT4);
 
         SendMessage(hSpin1, UDM_SETRANGE32, 1, 100);
         SendMessage(hSpin1, UDM_SETBUDDY, WPARAM(hEdit11), 0);
-        SetWindowText(hEdit11, TEXT("100"));
+        SetWindowText(hEdit11, TEXT("100"));*/
 
 
 
