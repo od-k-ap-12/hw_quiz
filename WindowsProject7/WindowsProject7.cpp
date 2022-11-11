@@ -150,7 +150,7 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
 
 
         if (LOWORD(wp) == IDOK) {
-            _stprintf_s(str, TEXT("Правильных ответов: %d, out of 100 percents "), Result);
+            _stprintf_s(str, TEXT("Правильных ответов: %d, из 100 "), Result);
             MessageBox(hWnd, str, TEXT("Результаты"), MB_OK | MB_ICONINFORMATION);
         }
         }
