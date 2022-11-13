@@ -30,49 +30,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 
-
-
-ATOM MyRegisterClass(HINSTANCE hInstance)
-{
-    WNDCLASSEXW wcex;
-
-    wcex.cbSize = sizeof(WNDCLASSEX);
-
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    //wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINDOWSPROJECT7));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WINDOWSPROJECT7);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-
-    return RegisterClassExW(&wcex);
-}
-
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-   hInst = hInstance;
-
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-
-   if (!hWnd)
-   {
-      return FALSE;
-   }
-
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
-
-   return TRUE;
-}
-
-
-
 BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
 {
     TCHAR str[100];
@@ -141,6 +98,16 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
         if (_tcscmp(Edit1, TEXT("15")) == 0)
             RightAnswers++;
         int Result= (RightAnswers * 100) / MaxRightAnswers;
+
+
+        /* hSpin1 = GetDlgItem(hWnd, IDC_SPIN2);
+         hSpin1 = GetDlgItem(hWnd, IDC_SPIN3);
+         hEdit11 = GetDlgItem(hWnd, IDC_EDIT3);
+         hEdit22 = GetDlgItem(hWnd, IDC_EDIT4);
+
+         SendMessage(hSpin1, UDM_SETRANGE32, 1, 100);
+         SendMessage(hSpin1, UDM_SETBUDDY, WPARAM(hEdit11), 0);
+         SetWindowText(hEdit11, TEXT("100"));*/
 
 
         if (LOWORD(wp) == IDOK) {
