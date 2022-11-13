@@ -3,6 +3,11 @@
 
 #include "framework.h"
 #include "Commctrl.h"
+#include <windows.h>
+#include <windowsX.h>
+#include <tchar.h>
+#include "resource.h"
+#pragma comment(lib,"comctl32")
 #include "WindowsProject7.h"
 
 #define MAX_LOADSTRING 100
@@ -12,7 +17,7 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
-HWND hCheckBox1,hCheckBox2,hEdit11,hEdit22,hSpin1,hSpin2;
+HWND hCheckBox1,hCheckBox2,hEdit11,hEdit22,hSpin1,hSpin2,hStatus;
 
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -83,9 +88,12 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
         EndDialog(hWnd, 0);
         return TRUE;
 
-    case  WM_INITDIALOG:
-
+    case  WM_INITDIALOG: {
+        hStatus = CreateStatusWindow(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_TOOLTIPS | SBARS_SIZEGRIP, 0, hWnd, WM_USER);
+        HMENU hMenu = LoadMenu(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MENU1));
+        SetMenu(hWnd, hMenu);
         return TRUE;
+    }
 
     case WM_COMMAND:{
         LRESULT result1 = SendDlgItemMessage(hWnd, IDC_RADIO1, BM_GETCHECK, 0, 0);
@@ -138,12 +146,18 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
             RightAnswers++;
         int Result= (RightAnswers * 100) / MaxRightAnswers;
 
+
         if (LOWORD(wp) == IDOK) {
             _stprintf_s(str, TEXT("Правильных ответов: %d, из 100 "), Result);
             MessageBox(hWnd, str, TEXT("Результаты"), MB_OK | MB_ICONINFORMATION);
         }
+        if(LOWORD(wp) == ID_EXIT_EXIT) {
+            DestroyWindow(hWnd);
+        }
+
         }
         return TRUE;
     }
     return FALSE;
 }
+
