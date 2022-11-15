@@ -52,6 +52,7 @@
 #define IDC_SPIN2                       1036
 #define IDC_EDIT4                       1037
 #define IDC_SPIN3                       1038
+#define IDC_PROGRESS1                   1039
 #define ID_EXIT_EXIT                    32771
 #define IDC_STATIC                      -1
 
@@ -62,7 +63,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        135
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

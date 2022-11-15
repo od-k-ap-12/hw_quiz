@@ -5,6 +5,7 @@
 #include "Commctrl.h"
 #pragma comment(lib,"comctl32")
 #include "WindowsProject7.h"
+#include <time.h>
 
 #define MAX_LOADSTRING 100
 
@@ -13,7 +14,7 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
-HWND hCheckBox1,hCheckBox2,hEdit11,hEdit22,hSpin1,hSpin2,hStatus;
+HWND hCheckBox1,hCheckBox2,hEdit11,hEdit22,hSpin1,hSpin2,hStatus,hProgress;
 
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -26,6 +27,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+    INITCOMMONCONTROLSEX icc = { sizeof(INITCOMMONCONTROLSEX) };
+    icc.dwICC = ICC_WIN95_CLASSES;
+    InitCommonControlsEx(&icc);
     return DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL, (DLGPROC)DlgProc);
 }
 
@@ -45,6 +49,27 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
         hStatus = CreateStatusWindow(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_TOOLTIPS | SBARS_SIZEGRIP, 0, hWnd, WM_USER);
         HMENU hMenu = LoadMenu(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MENU1));
         SetMenu(hWnd, hMenu);
+        hSpin1 = GetDlgItem(hWnd, IDC_SPIN2);
+        hSpin2 = GetDlgItem(hWnd, IDC_SPIN3);
+        hEdit11 = GetDlgItem(hWnd, IDC_EDIT3);
+        hEdit22 = GetDlgItem(hWnd, IDC_EDIT4);
+
+        SendMessage(hSpin1, UDM_SETRANGE, 0, MAKELPARAM(100, 0));
+        SendMessage(hSpin2, UDM_SETRANGE, 1, 1000);
+
+        SendMessage(hSpin1, UDM_SETBUDDY, WPARAM(hEdit11), 0);
+        SendMessage(hSpin2, UDM_SETBUDDY, WPARAM(hEdit22), 0);
+
+        SendMessage(hSpin1, UDM_SETBASE, 10, 0);
+
+        srand(time(0));
+        hProgress = GetDlgItem(hWnd, IDC_PROGRESS1);
+        SendMessage(hProgress, PBM_SETRANGE, 0, MAKELPARAM(0, 14));
+        SendMessage(hProgress, PBM_SETPOS, 0, 0);
+        SendMessage(hProgress, PBM_SETBKCOLOR, 0, LPARAM(RGB(0, 0, 0)));
+        SendMessage(hProgress, PBM_SETBARCOLOR, 0, LPARAM(RGB(255, 255, 0)));
+
+
         return TRUE;
     }
 
@@ -97,20 +122,21 @@ BOOL CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wp, LPARAM lp)
         GetWindowText(hEdit11, Edit2, 10);
         if (_tcscmp(Edit1, TEXT("15")) == 0)
             RightAnswers++;
+
+        hEdit11 = GetDlgItem(hWnd, IDC_EDIT3);
+        GetWindowText(hEdit11, Edit1, 10);
+        if (_tcscmp(Edit1, TEXT("30")) == 0)
+            RightAnswers++;
+        hEdit11 = GetDlgItem(hWnd, IDC_EDIT4);
+        GetWindowText(hEdit11, Edit2, 10);
+        if (_tcscmp(Edit1, TEXT("10")) == 0)
+            RightAnswers++;
+
         int Result= (RightAnswers * 100) / MaxRightAnswers;
 
 
-        /* hSpin1 = GetDlgItem(hWnd, IDC_SPIN2);
-         hSpin1 = GetDlgItem(hWnd, IDC_SPIN3);
-         hEdit11 = GetDlgItem(hWnd, IDC_EDIT3);
-         hEdit22 = GetDlgItem(hWnd, IDC_EDIT4);
-
-         SendMessage(hSpin1, UDM_SETRANGE32, 1, 100);
-         SendMessage(hSpin1, UDM_SETBUDDY, WPARAM(hEdit11), 0);
-         SetWindowText(hEdit11, TEXT("100"));*/
-
-
         if (LOWORD(wp) == IDOK) {
+            SendMessage(hProgress, PBM_SETPOS, RightAnswers, 0);
             _stprintf_s(str, TEXT("Правильных ответов: %d, из 100 "), Result);
             MessageBox(hWnd, str, TEXT("Результаты"), MB_OK | MB_ICONINFORMATION);
         }
